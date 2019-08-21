@@ -4,3 +4,4 @@ env
 venv
 *.pyc
 *.junipersstuffs
+.coverage
