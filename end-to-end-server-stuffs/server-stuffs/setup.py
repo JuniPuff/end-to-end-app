@@ -8,20 +8,6 @@ with open(os.path.join(here, 'README.txt')) as f:
 with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
-requires = [
-    'pyramid',
-    'pyramid_jinja2',
-    'pyramid_debugtoolbar',
-    'pyramid_tm',
-    'SQLAlchemy',
-    'transaction',
-    'zope.sqlalchemy',
-    'waitress',
-    'gunicorn',
-    'passlib',
-    'boto3'
-    ]
-
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',  # includes virtualenv
@@ -48,7 +34,6 @@ setup(name='server-stuffs',
       extras_require={
           'testing': tests_require,
       },
-      install_requires=requires,
       entry_points={
           'paste.app_factory': [
               'main = server_stuffs:main'
