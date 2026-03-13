@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from server_stuffs.models.meta import Base
 from server_stuffs.models import EmailBlacklistModel
-from server_stuffs.scripts.utilities import get_SQS_messages, delete_SQS_messages, removeEmailLabelIfAny
+from server_stuffs.scripts.utilities import get_SQS_messages, delete_SQS_messages, removeEmailLabelIfAny, get_var_with_fallback
 from server_stuffs.scripts.converters import dict_from_row
 import sys
 import os
@@ -10,9 +10,11 @@ import configparser
 import json
 from supervisor.childutils import listener
 
+iniFile = get_var_with_fallback('CONFIG_INI_PATH', '/app/development.ini')
+
 def handleBoucesAndComplaints():
     config = configparser.ConfigParser()
-    config.read('/etc/production.ini')
+    config.read(iniFile)
 
     SQSurl = config["app:main"]["sqs.url"]
 

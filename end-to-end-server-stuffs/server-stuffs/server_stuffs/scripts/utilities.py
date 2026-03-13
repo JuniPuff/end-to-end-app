@@ -8,6 +8,7 @@ import configparser
 from botocore.exceptions import ClientError
 import requests
 import json
+import os
 from pprint import pprint
 
 
@@ -41,7 +42,7 @@ def error_dict(error_type='generic_errors', errors=''):
 
 def send_email(email, subject, body_text, body_html):
     error = None
-    sender = "no-reply@juniper.squizzlezig.com"
+    sender = "no-reply@juniperhansmann.com"
     charset = "UTF-8"
     aws_region = "us-west-2"
     client = boto3.client('ses', region_name=aws_region)
@@ -153,3 +154,9 @@ def verifyRecaptchaToken(request):
                                                     "response": request.json_body.get("recaptcha_token")})
         jsonResponse = json.loads(response.text)
         return jsonResponse["success"]
+
+def get_var_with_fallback(env_var, fallback):
+    val = os.getenv(env_var)
+    if val is None:
+        val = fallback
+    return val

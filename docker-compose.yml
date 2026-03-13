@@ -32,9 +32,50 @@ services:
     links:
       - e2e-postgres
     ports:
-    - "8000:8000"
+      - "8000:8000"
+    environment:
+      CONFIG_INI_PATH: /app/development.ini
     build:
       context: ./end-to-end-server-stuffs/server-stuffs
       dockerfile: Dockerfile
-    volumes:
-      - ./tmpstuff:/app/tmpstuff:rw
+  e2e-frontend:
+    depends_on:
+      e2e-server:
+        condition: service_started
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    ports:
+      - "8080:8080"
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+    - NGINX_HOST=localhost
+    - NGINX_PORT=8080
+    - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx/templates
+    - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx/conf.d
+    - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
+    - API_HOST=e2e-server
+    - API_PORT=8000
+
+  # This is fine and dandy, but, also not really needed for the dev mode.
+  # e2e-email-fail-handler:
+  #   depends_on:
+  #     e2e-postgres:
+  #       condition: service_healthy
+  #     e2e-migrations:
+  #       condition: service_completed_successfully
+  #   links:
+  #     - e2e-postgres
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     CONFIG_INI_PATH: /app/development.ini
+  #   build:
+  #     context: ./end-to-end-server-stuffs/server-stuffs
+  #     dockerfile: Dockerfile
+  #   deploy:
+  #     restart_policy:
+  #       condition: none
+  #       delay: 5s
+  #   command: ["python", "/app/server_stuffs/scripts/handle_SQS_messages.py"]
