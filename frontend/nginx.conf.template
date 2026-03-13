@@ -22,6 +22,18 @@ server {
 		root /app/;
 	}
 
+	location /login {
+		alias /var/www/frontend/html/login-signup;
+	}
+
+	location /signup {
+		alias /var/www/frontend/html/login-signup;
+	}
+
+	location /favicon.ico {
+		alias /var/www/frontend/html/Metroid.ico;
+	}
+
 	location /api {
 		resolver 127.0.0.11;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
