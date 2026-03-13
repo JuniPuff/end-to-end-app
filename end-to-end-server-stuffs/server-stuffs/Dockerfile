@@ -21,4 +21,4 @@ ENV GUNICORN_BIND=0.0.0.0:8000
 CMD gunicorn app:app \
     --workers ${GUNICORN_WORKERS} \
     --bind ${GUNICORN_BIND} \   
-    --paste ./development.ini
+    --paste ${CONFIG_INI_PATH}
