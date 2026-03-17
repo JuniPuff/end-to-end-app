@@ -23,15 +23,15 @@ server {
 	}
 
 	location /login {
-		alias /var/www/frontend/html/login-signup;
+		alias /app/html/login-signup;
 	}
 
 	location /signup {
-		alias /var/www/frontend/html/login-signup;
+		alias /app/html/login-signup;
 	}
 
 	location /favicon.ico {
-		alias /var/www/frontend/html/Metroid.ico;
+		alias /app/html/Metroid.ico;
 	}
 
 	location /api {
