@@ -246,7 +246,8 @@ function LoginSignup() {
                     //     onExpire: (e) => {handleExpireReCaptcha(e)}}),
                     React.createElement('button', {className:"inputButton", onClick: handleSignupSubmit},
                         "Submit")
-                )
+                ),
+                React.createElement('p', {}, "This won't work. I'm moving AWS accounts, and I wanna redo this site anyways, so I'm not gonna go get production email approval from them again. But nothing *requires* an account :)")
             )
         );
     }
