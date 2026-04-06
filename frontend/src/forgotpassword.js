@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Reaptcha from 'reaptcha';
 import { validateEmail, postRequest } from './utilities';
 
 const ENTER_KEYCODE = 13;
@@ -8,8 +7,8 @@ const ENTER_KEYCODE = 13;
 function ForgotPassword() {
     const [Email, setEmail] = React.useState("");
     const [sendingRequest, setSendingRequest] = React.useState(false);
-    const [recaptchaToken, setRecaptchaToken] = React.useState("");
-    var recaptchaRef = React.useRef();
+    // const [recaptchaToken, setRecaptchaToken] = React.useState("");
+    // var recaptchaRef = React.useRef();
 
     const [displayError, setDisplayError] = React.useState(false);
     const [displaySuccess, setDisplaySuccess] = React.useState(false);
@@ -28,14 +27,14 @@ function ForgotPassword() {
         setEmail(e.target.value);
     }
 
-    function handleVerifyReCaptcha(e) {
-        setRecaptchaToken(e);
-    }
+    // function handleVerifyReCaptcha(e) {
+    //     setRecaptchaToken(e);
+    // }
 
-    function handleExpireReCaptcha() {
-        setRecaptchaToken("");
-        recaptchaRef.current.reset();
-    }
+    // function handleExpireReCaptcha() {
+    //     setRecaptchaToken("");
+    //     recaptchaRef.current.reset();
+    // }
 
     function handleSubmit() {
         setDisplayError(false);
@@ -48,8 +47,12 @@ function ForgotPassword() {
         if (!sendingRequest) {
             if (validateEmail(Email)) {
                 setSendingRequest(true);
-                const resetEmailRequest = postRequest("resettokens", {"user_email": Email,
-                                                                    "recaptcha_token": recaptchaToken});
+                const resetEmailRequest = postRequest(
+                    "resettokens",
+                    {
+                            "user_email": Email,
+                            // "recaptcha_token": recaptchaToken
+                    });
                 resetEmailRequest.then(function() {
                     setSendingRequest(false);
                     setSuccessValue("If there is a user with that email, you'll receive a password reset link!");
@@ -67,10 +70,10 @@ function ForgotPassword() {
                                 "if you need anything.");
                             setDisplayError(true);
                             break;
-                        case "recaptcha token is invalid":
-                            setErrorValue("Nupe. Yous got a bad recaptcha token. Yous a bot.")
-                            setDisplayError(true)
-                            break;
+                        // case "recaptcha token is invalid":
+                        //     setErrorValue("Nupe. Yous got a bad recaptcha token. Yous a bot.")
+                        //     setDisplayError(true)
+                        //     break;
                     }
                 });
 
@@ -90,11 +93,11 @@ function ForgotPassword() {
             (displayError && React.createElement('p', {className:"error"}, errorValue)),
             (displaySuccess && React.createElement('p', {className:"success"}, successValue)),
             React.createElement('div', {className: "inputButtonContainer"},
-                React.createElement(Reaptcha, {sitekey: "6LerI8YUAAAAAL4tpU_V5_PyEXjRsnsfE_jRrozx",
-                    theme: "dark",
-                    ref: recaptchaRef,
-                    onVerify: (e) => {handleVerifyReCaptcha(e)},
-                    onExpire: (e) => {handleExpireReCaptcha(e)}}),
+                // React.createElement(Reaptcha, {sitekey: "6LerI8YUAAAAAL4tpU_V5_PyEXjRsnsfE_jRrozx",
+                //     theme: "dark",
+                //     ref: recaptchaRef,
+                //     onVerify: (e) => {handleVerifyReCaptcha(e)},
+                //     onExpire: (e) => {handleExpireReCaptcha(e)}}),
                 React.createElement('div', {className: "inputButton miniButton", onClick: handleSubmit}, "Submit")
             ),
             React.createElement('p', {}, "This won't work. I'm moving AWS accounts, and I wanna redo this site anyways, so I'm not gonna go get production email approval from them again. But nothing *requires* an account :)")

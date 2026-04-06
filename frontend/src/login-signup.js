@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Reaptcha from 'reaptcha';
 import {postRequest, validateEmail} from './utilities.js'
 
 const ENTER_KEYCODE = 13;
@@ -13,8 +12,8 @@ function LoginSignup() {
     const [Username, setUsername] = React.useState("");
     const [Email, setEmail] = React.useState("");
     const [PasswordAgain, setPasswordAgain] = React.useState("");
-    const [recaptchaToken, setRecaptchaToken] = React.useState("");
-    var recaptchaRef = React.useRef();
+    // const [recaptchaToken, setRecaptchaToken] = React.useState("");
+    // var recaptchaRef = React.useRef();
 
     //Shared
     const [Password, setPassword] = React.useState("");
@@ -40,10 +39,10 @@ function LoginSignup() {
                     "if you need anything.");
                 setDisplayError(true);
                 break;
-            case "recaptcha token is invalid":
-                setErrorValue("Nupe. Yous got a bad recaptcha token. Yous a bot.");
-                setDisplayError(true);
-                break;
+            // case "recaptcha token is invalid":
+            //     setErrorValue("Nupe. Yous got a bad recaptcha token. Yous a bot.");
+            //     setDisplayError(true);
+            //     break;
             default:
                 setErrorValue("error: " + error);
                 setDisplayError(true);
@@ -129,14 +128,14 @@ function LoginSignup() {
         }
     }
 
-    function handleVerifyReCaptcha(e) {
-        setRecaptchaToken(e);
-    }
+    // function handleVerifyReCaptcha(e) {
+    //     setRecaptchaToken(e);
+    // }
 
-    function handleExpireReCaptcha() {
-        setRecaptchaToken("");
-        recaptchaRef.current.reset();
-    }
+    // function handleExpireReCaptcha() {
+    //     setRecaptchaToken("");
+    //     recaptchaRef.current.reset();
+    // }
 
     function handleSignupSubmit() {
         setDisplaySuccess(false);
@@ -170,18 +169,24 @@ function LoginSignup() {
             setDisplayError(true);
             return;
         }
-        else if (!recaptchaToken) {
-            setErrorValue("Please verify you are not a bot");
-            setDisplayError(true);
-            return;
-        }
+        // else if (!recaptchaToken) {
+        //     setErrorValue("Please verify you are not a bot");
+        //     setDisplayError(true);
+        //     return;
+        // }
         else {
             setDisplayError(false);
         }
 
         if (!sendingRequest) {
-            var signupRequest = postRequest("users", {"user_name": Username, "user_email": Email,
-                                                    "user_pass": Password, "recaptcha_token": recaptchaToken})
+            var signupRequest = postRequest(
+                "users",
+                {
+                    "user_name": Username,
+                    "user_email": Email,
+                    "user_pass": Password,
+                    // "recaptcha_token": recaptchaToken
+                })
             setSendingRequest(true)
 
             signupRequest.then(function(result){
@@ -234,11 +239,11 @@ function LoginSignup() {
                 React.createElement('div', {className:"inputButtonContainer"},
                     React.createElement('button', {className:"inputButton miniButton", onClick:() => {window.location.href="/login"}},
                         "Login"),
-                    React.createElement(Reaptcha, {sitekey: "6LerI8YUAAAAAL4tpU_V5_PyEXjRsnsfE_jRrozx",
-                        theme: "dark",
-                        ref: recaptchaRef,
-                        onVerify: (e) => {handleVerifyReCaptcha(e)},
-                        onExpire: (e) => {handleExpireReCaptcha(e)}}),
+                    // React.createElement(Reaptcha, {sitekey: "6LerI8YUAAAAAL4tpU_V5_PyEXjRsnsfE_jRrozx",
+                    //     theme: "dark",
+                    //     ref: recaptchaRef,
+                    //     onVerify: (e) => {handleVerifyReCaptcha(e)},
+                    //     onExpire: (e) => {handleExpireReCaptcha(e)}}),
                     React.createElement('button', {className:"inputButton", onClick: handleSignupSubmit},
                         "Submit")
                 )

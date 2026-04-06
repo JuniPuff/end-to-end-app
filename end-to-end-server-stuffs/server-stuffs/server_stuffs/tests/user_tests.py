@@ -120,27 +120,27 @@ class UserTests(PyramidTestBase):
         self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
                                                     "errors": ["password must be at least 8 characters"]}})
 
-    def test_post_user_no_recaptcha_token(self):
-        # Remove recaptchaTestToken
-        delattr(self.request, "recaptchaTestToken")
+    # def test_post_user_no_recaptcha_token(self):
+    #     # Remove recaptchaTestToken
+    #     delattr(self.request, "recaptchaTestToken")
 
-        self.request.method = 'POST'
-        self.request.json_body = {"user_name": "TestUser", "user_email": "success@simulator.amazonses.com",
-                                  "user_pass": "passwordForTest"}
-        response = users.users(self.request)
-        self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
-                                                    "errors": ["recaptcha_token is required"]}})
+    #     self.request.method = 'POST'
+    #     self.request.json_body = {"user_name": "TestUser", "user_email": "success@simulator.amazonses.com",
+    #                               "user_pass": "passwordForTest"}
+    #     response = users.users(self.request)
+    #     self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
+    #                                                 "errors": ["recaptcha_token is required"]}})
 
-    def test_post_user_bad_recaptcha_token(self):
-        # Use bad recaptcha test token
-        self.request.recaptchaTestToken = "badTestToken"
+    # def test_post_user_bad_recaptcha_token(self):
+    #     # Use bad recaptcha test token
+    #     self.request.recaptchaTestToken = "badTestToken"
 
-        self.request.method = 'POST'
-        self.request.json_body = {"user_name": "TestUser", "user_email": "success@simulator.amazonses.com",
-                                  "user_pass": "passwordForTest"}
-        response = users.users(self.request)
-        self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
-                                                    "errors": ["recaptcha token is invalid"]}})
+    #     self.request.method = 'POST'
+    #     self.request.json_body = {"user_name": "TestUser", "user_email": "success@simulator.amazonses.com",
+    #                               "user_pass": "passwordForTest"}
+    #     response = users.users(self.request)
+    #     self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
+    #                                                 "errors": ["recaptcha token is invalid"]}})
     
     def test_post_delete_invalid_users(self):
         # Make invalid user
@@ -381,43 +381,43 @@ class UserTests(PyramidTestBase):
                                                     "user_email": "test@juniper.squizzlezig.com",
                                                     "started": started, "verified": True}})
 
-    def test_put_user_by_id_email_no_recaptcha_token(self):
-        # Make user
-        user_data = self.make_user(email="test@juniper.squizzlezig.com")
-        token = user_data["session"]["token"]
-        user_id = user_data["user_id"]
+    # def test_put_user_by_id_email_no_recaptcha_token(self):
+    #     # Make user
+    #     user_data = self.make_user(email="test@juniper.squizzlezig.com")
+    #     token = user_data["session"]["token"]
+    #     user_id = user_data["user_id"]
 
-        # Remove recaptchaTestToken
-        delattr(self.request, "recaptchaTestToken")
+    #     # Remove recaptchaTestToken
+    #     delattr(self.request, "recaptchaTestToken")
 
-        # Update user
-        self.request.method = 'PUT'
-        self.request.matchdict = {"user_id": user_id}
-        self.request.json_body = {"user_name": "UserForTesting", "user_email": "success@simulator.amazonses.com",
-                                    "old_pass": "TestPass", "user_pass": "passwordForTest", "token": token}
-        self.request.user = user(self.request)
-        response = users.users_by_id(self.request)
-        self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
-                                                    "errors": ["recaptcha_token required when using user_email"]}})
+    #     # Update user
+    #     self.request.method = 'PUT'
+    #     self.request.matchdict = {"user_id": user_id}
+    #     self.request.json_body = {"user_name": "UserForTesting", "user_email": "success@simulator.amazonses.com",
+    #                                 "old_pass": "TestPass", "user_pass": "passwordForTest", "token": token}
+    #     self.request.user = user(self.request)
+    #     response = users.users_by_id(self.request)
+    #     self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
+    #                                                 "errors": ["recaptcha_token required when using user_email"]}})
     
-    def test_put_user_by_id_email_bad_recaptcha_token(self):
-        # Make user
-        user_data = self.make_user(email="test@juniper.squizzlezig.com")
-        token = user_data["session"]["token"]
-        user_id = user_data["user_id"]
+    # def test_put_user_by_id_email_bad_recaptcha_token(self):
+    #     # Make user
+    #     user_data = self.make_user(email="test@juniper.squizzlezig.com")
+    #     token = user_data["session"]["token"]
+    #     user_id = user_data["user_id"]
 
-        # Use bad recaptcha test token
-        self.request.recaptchaTestToken = "badTestToken"
+    #     # Use bad recaptcha test token
+    #     self.request.recaptchaTestToken = "badTestToken"
 
-        # Update user
-        self.request.method = 'PUT'
-        self.request.matchdict = {"user_id": user_id}
-        self.request.json_body = {"user_name": "UserForTesting", "user_email": "success@simulator.amazonses.com",
-                                    "old_pass": "TestPass", "user_pass": "passwordForTest", "token": token}
-        self.request.user = user(self.request)
-        response = users.users_by_id(self.request)
-        self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
-                                                    "errors": ["recaptcha token is invalid"]}})
+    #     # Update user
+    #     self.request.method = 'PUT'
+    #     self.request.matchdict = {"user_id": user_id}
+    #     self.request.json_body = {"user_name": "UserForTesting", "user_email": "success@simulator.amazonses.com",
+    #                                 "old_pass": "TestPass", "user_pass": "passwordForTest", "token": token}
+    #     self.request.user = user(self.request)
+    #     response = users.users_by_id(self.request)
+    #     self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
+    #                                                 "errors": ["recaptcha token is invalid"]}})
 
     def test_delete_user_by_id(self):
         # Make user

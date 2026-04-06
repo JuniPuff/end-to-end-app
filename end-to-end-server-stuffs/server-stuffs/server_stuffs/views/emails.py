@@ -8,7 +8,7 @@ import json
 from ..models import UserModel, ResetTokenModel, VerifyTokenModel
 from ..scripts.password_hashing import pwd_context
 from ..scripts.utilities import (error_dict, datetime_serializer, send_email, send_verification_email,
-                            isEmailBlacklisted, removeEmailLabelIfAny, verifyRecaptchaToken)
+                            isEmailBlacklisted, removeEmailLabelIfAny)
 
 removals = ['user_pass']
 
@@ -18,13 +18,13 @@ def resettokens(request):
     if request.method == 'POST':
         body = request.json_body
 
-        if body.get("recaptcha_token") is None and not hasattr(request, "recaptchaTestToken"):
-            status_code = httpexceptions.HTTPBadRequest.code
-            result = error_dict("api_error", "recaptcha_token is required")
-        elif not verifyRecaptchaToken(request):
-            status_code = httpexceptions.HTTPBadRequest.code
-            result = error_dict("api_error", "recaptcha token is invalid")
-        elif body.get("user_email") is None and body.get("resettoken") is None:
+        # if body.get("recaptcha_token") is None and not hasattr(request, "recaptchaTestToken"):
+        #     status_code = httpexceptions.HTTPBadRequest.code
+        #     result = error_dict("api_error", "recaptcha_token is required")
+        # elif not verifyRecaptchaToken(request):
+        #     status_code = httpexceptions.HTTPBadRequest.code
+        #     result = error_dict("api_error", "recaptcha token is invalid")
+        if body.get("user_email") is None and body.get("resettoken") is None:
             status_code = httpexceptions.HTTPBadRequest.code
             result = error_dict("api_error", "user_email or resettoken is required")
         else:

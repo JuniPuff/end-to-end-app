@@ -171,7 +171,7 @@ class PyramidTestBase(TestBase):
         self.request.recaptchaTestToken = "successTestToken"
         
         # Tests dont get the config data, so Im setting to googles test secret here
-        self.request.registry.settings["recaptcha_secret"] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+        # self.request.registry.settings["recaptcha_secret"] = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
 
     def tearDown(self):
         testing.tearDown()

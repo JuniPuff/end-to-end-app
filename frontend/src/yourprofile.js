@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Reaptcha from 'reaptcha';
 import {getRequest, validateEmail, putRequest, deleteRequest} from './utilities.js';
 
 const ENTER_KEYCODE = 13;
@@ -18,9 +17,9 @@ function UserProfile() {
     const [new_pass, setNew_pass] = React.useState("");
     const [new_passAgain, setNew_passAgain] = React.useState("");
 
-    const [recaptchaVisible, setRecaptchaVisible] = React.useState(false);
-    const [recaptchaToken, setRecaptchaToken] = React.useState("");
-    var recaptchaRef = React.useRef();
+    // const [recaptchaVisible, setRecaptchaVisible] = React.useState(false);
+    // const [recaptchaToken, setRecaptchaToken] = React.useState("");
+    // var recaptchaRef = React.useRef();
 
     const [inputNameState, setInputNameState] = React.useState("Loading");
     const [messageValue, setMessageValue] = React.useState("just a sec");
@@ -81,10 +80,10 @@ function UserProfile() {
                 setErrorValue("error: current password is incorrect");
                 setDisplayError(true);
                 return;
-            case "recaptcha token is invalid":
-                setErrorValue("Nupe. Yous got a bad recaptcha token. Yous a bot.");
-                setDisplayError(true);
-                break;
+            // case "recaptcha token is invalid":
+            //     setErrorValue("Nupe. Yous got a bad recaptcha token. Yous a bot.");
+            //     setDisplayError(true);
+            //     break;
 
         }
     }
@@ -104,11 +103,11 @@ function UserProfile() {
                 setUser_name(e.target.value);
                 break;
             case "email":
-                if (e.target.value != prevUser_email) {
-                    setRecaptchaVisible(true)
-                } else {
-                    setRecaptchaVisible(false)
-                }
+                // if (e.target.value != prevUser_email) {
+                //     setRecaptchaVisible(true)
+                // } else {
+                //     setRecaptchaVisible(false)
+                // }
                 setUser_email(e.target.value);
                 break;
             case "current password":
@@ -157,14 +156,14 @@ function UserProfile() {
         }
     }
 
-    function handleVerifyReCaptcha(e) {
-        setRecaptchaToken(e);
-    }
+    // function handleVerifyReCaptcha(e) {
+    //     setRecaptchaToken(e);
+    // }
 
-    function handleExpireReCaptcha() {
-        setRecaptchaToken("");
-        recaptchaRef.current.reset();
-    }
+    // function handleExpireReCaptcha() {
+    //     setRecaptchaToken("");
+    //     recaptchaRef.current.reset();
+    // }
 
     function handleSave() {
         setDisplayError(false);
@@ -190,13 +189,13 @@ function UserProfile() {
             setDisplayError(true);
             return;
         } else if (user_email != prevUser_email) {
-            if (!recaptchaToken) {
-                setErrorValue("Please verify you are not a bot");
-                setDisplayError(true);
-                return;
-            }
-            else if (validateEmail(user_email)) {
-                dataToUpdate["recaptcha_token"] = recaptchaToken;
+            // if (!recaptchaToken) {
+            //     setErrorValue("Please verify you are not a bot");
+            //     setDisplayError(true);
+            //     return;
+            // }
+            if (validateEmail(user_email)) {
+                // dataToUpdate["recaptcha_token"] = recaptchaToken;
                 dataToUpdate["user_email"] = user_email;
             } else {
                 setErrorValue("error: valid email is required");
@@ -290,12 +289,12 @@ function UserProfile() {
                 (displaySuccess && React.createElement('p', {className: "success"}, successValue)),
 
                 React.createElement('div', {className: "inputButtonContainer"},
-                    (recaptchaVisible && React.createElement(Reaptcha,
-                        {sitekey: "6LerI8YUAAAAAL4tpU_V5_PyEXjRsnsfE_jRrozx",
-                        theme: "dark",
-                        ref: recaptchaRef,
-                        onVerify: (e) => {handleVerifyReCaptcha(e)},
-                        onExpire: (e) => {handleExpireReCaptcha(e)}})),
+                    // (recaptchaVisible && React.createElement(Reaptcha,
+                    //     {sitekey: "6LerI8YUAAAAAL4tpU_V5_PyEXjRsnsfE_jRrozx",
+                    //     theme: "dark",
+                    //     ref: recaptchaRef,
+                    //     onVerify: (e) => {handleVerifyReCaptcha(e)},
+                    //     onExpire: (e) => {handleExpireReCaptcha(e)}})),
                     React.createElement('button', {className:"inputButton miniButton", onClick: handleSave},
                         "Save"),
                     React.createElement('button', {className: "inputButton red deleteButton", onClick: () => {changeDeleting();}},

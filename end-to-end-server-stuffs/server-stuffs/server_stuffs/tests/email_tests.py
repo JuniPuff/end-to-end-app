@@ -234,33 +234,33 @@ class EmailTests(PyramidTestBase):
         self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
                                                     "errors": ["email is blacklisted"]}})
 
-    def test_post_reset_email_no_recaptcha_token(self):
-        # Make user
-        user_data = self.make_user()
-        user_email = user_data["user_email"]
+    # def test_post_reset_email_no_recaptcha_token(self):
+    #     # Make user
+    #     user_data = self.make_user()
+    #     user_email = user_data["user_email"]
 
-        # Remove recaptcha token
-        delattr(self.request, "recaptchaTestToken")
+    #     # Remove recaptcha token
+    #     delattr(self.request, "recaptchaTestToken")
 
-        self.request.method = 'POST'
-        self.request.json_body = {"user_email": user_email}
-        response = emails.resettokens(self.request)
-        self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
-                                                    "errors": ["recaptcha_token is required"]}})
+    #     self.request.method = 'POST'
+    #     self.request.json_body = {"user_email": user_email}
+    #     response = emails.resettokens(self.request)
+    #     self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
+    #                                                 "errors": ["recaptcha_token is required"]}})
 
-    def test_post_reset_email_bad_recaptcha_token(self):
-        # Make user
-        user_data = self.make_user()
-        user_email = user_data["user_email"]
+    # def test_post_reset_email_bad_recaptcha_token(self):
+    #     # Make user
+    #     user_data = self.make_user()
+    #     user_email = user_data["user_email"]
 
-        # Use bad recaptcha test token
-        self.request.recaptchaTestToken = "badTestToken"
+    #     # Use bad recaptcha test token
+    #     self.request.recaptchaTestToken = "badTestToken"
 
-        self.request.method = 'POST'
-        self.request.json_body = {"user_email": user_email}
-        response = emails.resettokens(self.request)
-        self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
-                                                    "errors": ["recaptcha token is invalid"]}})
+    #     self.request.method = 'POST'
+    #     self.request.json_body = {"user_email": user_email}
+    #     response = emails.resettokens(self.request)
+    #     self.assertEqual(response.json_body, {"d": {"error_type": "api_error",
+    #                                                 "errors": ["recaptcha token is invalid"]}})
 
     def test_put_reset_successful(self):
         # Make user

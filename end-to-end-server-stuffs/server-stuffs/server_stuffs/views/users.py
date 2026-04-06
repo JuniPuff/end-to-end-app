@@ -9,7 +9,7 @@ from ..models import UserModel, SessionModel, ResetTokenModel, VerifyTokenModel
 from ..scripts.password_hashing import pwd_context
 from ..scripts.converters import dict_from_row
 from ..scripts.utilities import (error_dict, datetime_serializer, send_verification_email,
-    send_email, isEmailBlacklisted, removeEmailLabelIfAny, verifyRecaptchaToken)
+    send_email, isEmailBlacklisted, removeEmailLabelIfAny)
 
 removals = ['user_pass']
 
@@ -56,13 +56,13 @@ def users(request):
     if request.method == 'POST':
         body = request.json_body
 
-        if body.get("recaptcha_token") is None and not hasattr(request, "recaptchaTestToken"):
-            status_code = httpexceptions.HTTPBadRequest.code
-            result = error_dict("api_error", "recaptcha_token is required")
-        elif not verifyRecaptchaToken(request):
-            status_code = httpexceptions.HTTPBadRequest.code
-            result = error_dict("api_error", "recaptcha token is invalid")
-        elif "user_name" not in body or "user_email" not in body or "user_pass" not in body:
+        # if body.get("recaptcha_token") is None and not hasattr(request, "recaptchaTestToken"):
+        #     status_code = httpexceptions.HTTPBadRequest.code
+        #     result = error_dict("api_error", "recaptcha_token is required")
+        # elif not verifyRecaptchaToken(request):
+        #     status_code = httpexceptions.HTTPBadRequest.code
+        #     result = error_dict("api_error", "recaptcha token is invalid")
+        if "user_name" not in body or "user_email" not in body or "user_pass" not in body:
             status_code = httpexceptions.HTTPBadRequest.code
             result = error_dict("api_error", "username, email, and password are required")
         elif username_in_use(body.get('user_name'), request.dbsession):
@@ -176,12 +176,12 @@ def users_by_id(request):
             elif body.get("user_name") is None and body.get("user_email") is None and body.get("user_pass") is None:
                 status_code = httpexceptions.HTTPBadRequest.code
                 result = error_dict("api_error", "no values provided to update")
-            elif body.get("user_email") and body.get("recaptcha_token") is None and not hasattr(request, "recaptchaTestToken"):
-                status_code = httpexceptions.HTTPBadRequest.code
-                result = error_dict("api_error", "recaptcha_token required when using user_email")
-            elif body.get("user_email") and not verifyRecaptchaToken(request):
-                status_code = httpexceptions.HTTPBadRequest.code
-                result = error_dict("api_error", "recaptcha token is invalid")
+            # elif body.get("user_email") and body.get("recaptcha_token") is None and not hasattr(request, "recaptchaTestToken"):
+            #     status_code = httpexceptions.HTTPBadRequest.code
+            #     result = error_dict("api_error", "recaptcha_token required when using user_email")
+            # elif body.get("user_email") and not verifyRecaptchaToken(request):
+            #     status_code = httpexceptions.HTTPBadRequest.code
+            #     result = error_dict("api_error", "recaptcha token is invalid")
             elif body.get("user_email") and email_in_use(body.get("user_email"), request.dbsession):
                 status_code = httpexceptions.HTTPBadRequest.code
                 result = error_dict("api_error", "email already in use")
